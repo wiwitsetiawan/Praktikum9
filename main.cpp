@@ -1,29 +1,69 @@
- #include <iostream>
+#include <iostream>
+#include <math.h>
+
 using namespace std;
 
-int main()
-{
-   int max,n,i,min;
-   float A[100];
-   cout <<"Masukkan Jumlah Data : ";cin>>n;
-   for(i=0;i<n;i++){
-		cout << "masukkan bilangan ke "<< i+1 << " : ";
-		cin >> A[i];}
-   max = A[0];
-    for (i=1;i<n;i++){
-       if (max <  A [i])
-            max = A[i];
+class HitungStatistik {
+friend ostream& operator<<(ostream&, HitungStatistik&);
+friend istream& operator>>(istream&, HitungStatistik&);
+public:
+HitungStatistik();
+void hitung_modus();
+private:
+void maksimum();
+void frekuensi();
+int maks, item;
+int n;
+int A[20];
+int f[11];
+};
 
-      if (min >  A [i])
-            min = A[i];
+HitungStatistik::HitungStatistik()
+{ for (int i=0; i<20; i++) f[i] = 0; }
 
-    }
-
-    cout <<"Nilai Terbesar adalah : "<<max<<endl;
-    cout <<"Nilai Terkecil adalah : "<<min<<endl;
-    return 0;
+istream& operator>>(istream& in, HitungStatistik& a) {
+cout << "Banyaknya data : ";
+cin >> a.n;
+for (int i = 0; i < a.n; i++) {
+cout << "Data ke- : " << i+1 << " > ";
+cin >> a.A[i];
+}
+return in;
 }
 
+void HitungStatistik::maksimum()
+{
+maks = f[0];
+item = 1;
+for (int i=0; i<n; i++)
+if (f[i] > maks) {
+maks = f[i];
+item = i;
+}
+cout << "Modus = " << item;
+}
 
+void HitungStatistik::frekuensi()
+{
+for (int i=1; i<n; i++) ++f[A[i]];
+}
 
+void HitungStatistik::hitung_modus() {
+cout << "Frekuensi running\n";
+frekuensi();
+maksimum();
+}
 
+ostream& operator<<(ostream& out, HitungStatistik& a) {
+cout << "Mulai ...\n";
+a.hitung_modus();
+cout << "Nilai modus : " << a.item;
+return out;
+}
+
+main() {
+HitungStatistik run;
+cin >> run;
+cout << run;
+return 0;
+}
